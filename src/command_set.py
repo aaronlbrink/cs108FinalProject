@@ -9,7 +9,7 @@ class CommandSet:
         for command in self._commands:
             # while looking through all the commands in the list, see if the spoken text matches a command in the list
             if command.matches(spoken_text):
-                command.run(spoken_text)
+                return command.run(spoken_text)
         
         
         
