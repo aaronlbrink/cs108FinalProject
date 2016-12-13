@@ -1,3 +1,8 @@
+'''
+Created on Dec 12, 2016
+
+@author: Aaron
+'''
 #!/usr/bin/env python3
 
 import speech_recognition as sr
@@ -14,7 +19,7 @@ and listening for speech with the microphone object (which is using pyaudio)
 '''
         
 # App name variable
-app_name = 'Anke'    
+app_name = 'The Latest Voice-Command System'    
 # initialized the recognizer from the speech recognition library
 r = sr.Recognizer()
 class GuiWindow:
@@ -27,6 +32,7 @@ class GuiWindow:
         # Initialize text line count
         self.line_count = 1.0
         self.window = window
+        # Makes the window bigger on Linux
         self.window.minsize(width=400, height=200)
         # Create a toolbar help menu
         self.menu = Menu(window)
@@ -45,11 +51,18 @@ class GuiWindow:
         # Create Welcoming Text
         self.introduction = Label(window, text=app_name, font=("Helvetica", 24))
         self.message = Entry(width=70, justify='center')
+        # Create manual entries instead of using voice recognition
+        self.enter_input_button = Button(window, text='Go', command=self.enter_input_button_handler)
+        self.input_message_description = Label(window, text='Enter a command manually here, or have it listen below')
+        self.input_message = Entry(width=70, justify='center')
 
         # Insert a message on a new line using the line_count_increase function
-        self.handle_output("Hello! To begin click Start     ")
+        self.handle_output("Hello! To begin click Start")
         # Pack the GUI components
         self.introduction.pack()
+        self.input_message_description.pack()
+        self.input_message.pack()
+        self.enter_input_button.pack()
         self.listen_button.pack()
         self.stop_listen_button.pack()
         self.message.pack()
@@ -59,6 +72,11 @@ class GuiWindow:
             command.TimerCommand(),
             command.GoogleCommand(),
             ])
+    
+    def enter_input_button_handler(self):
+        ''' Handles input from the user specified in the text box'''
+        input_message = self.input_message.get()
+        self.handle_spoken_text(input_message)
         
     def listen(self):
         ''' Starts listening to the microphone as the source.'''
@@ -82,6 +100,7 @@ class GuiWindow:
         self.handle_output('°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°Working`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸')
         print('handling results...')
         try:
+        # This try block comes from the example on the SpeechRecognition site
         # for testing purposes, we're just using the default API key
         # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
         # instead of `r.recognize_google(audio)`
@@ -90,9 +109,7 @@ class GuiWindow:
             # Outputs the audio to the GUI
             self.handle_output(recognized_audio)
             # Searches through the command set for a command associated with the recognized audio by using the command_set's handle command method
-            if self.command_set.handle_command(recognized_audio) is not None:
-                output = self.command_set.handle_command(recognized_audio)
-                self.handle_output(output)
+            self.handle_spoken_text(recognized_audio)
             
         except sr.UnknownValueError:
             print("Google Speech Recognition could not understand audio")
@@ -132,6 +149,10 @@ class GuiWindow:
         self.message.delete(0, END)
         self.message.insert(0, message)
         
+    def handle_spoken_text(self, spoken_text):
+        output = self.command_set.handle_command(spoken_text)
+        if output is not None:
+            self.handle_output(output)
 if __name__ == '__main__':
     root = Tk()
     root.title('Voice Recognition')    
