@@ -35,14 +35,14 @@ class TimerTest(unittest.TestCase):
         things_that_should_not_match = [
             'timer thirty',
             'timer hello',
-            'blah',
+            'nottime',
             'time this',
             ]
         for spoken_text in things_that_should_not_match:
             assert not command.TimerCommand().matches(spoken_text), 'A phrase was matched that shouldn\'t\'ve: ' + str(spoken_text)
             
     def test_timer_run_parses(self):
-        '''Also made by binki because he can't stand things'''
+        ''' This test was created by binki '''
         class TestableTimerCommand(command.TimerCommand):
             
             def __init__(self):
