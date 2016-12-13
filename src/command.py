@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 import threading
 import urllib.parse
 import webbrowser
-import archie
 # regex
 import re
 
@@ -13,6 +12,7 @@ class Command:
         self._regex = re.compile(regex)
         
     def matches(self, spoken_text):
+        ''' checks if the spoken text matches a regex expression of spoken text '''
         return self._regex.search(spoken_text)
     
 
@@ -26,6 +26,7 @@ class Command:
 
 class TimerCommand(Command):
     def __init__(self):
+        # Inherits the command class and passes in the regex expression for when the user says timer and a number after
         Command.__init__(self, r'^timer.* ([0123456789]+)')
         
     def run(self, spoken_text):
