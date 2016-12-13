@@ -1,0 +1,7 @@
+This project uses the following libraries:
+- SpeechRecognition
+- PyAudio
+(and a few others that should work automatically)
+
+However, to test functionality without these libraries, I've added a command prompt like part to the interface where
+input can be taken and the command functions can be tested.

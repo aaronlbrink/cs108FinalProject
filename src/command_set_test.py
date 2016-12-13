@@ -3,6 +3,7 @@ import command_set
 import unittest
 
 class MockCommand(command.Command):
+    ''' Creating a fake command which inherits from the base class Command '''
     def __init__(self, regex):
         command.Command.__init__(self, regex)
         self.run_called = False

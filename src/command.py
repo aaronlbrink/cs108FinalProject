@@ -6,7 +6,7 @@ import webbrowser
 import re
 
 class Command:
-    ''' This class specifies the different regex''' 
+    ''' Parent class which lays out the methods for the different commands ''' 
     
     def __init__(self, regex):
         self._regex = re.compile(regex)
